@@ -14,7 +14,7 @@ spec:
     spec:
       containers:  
       - name: weather-app  
-        image: yaleea1996/weather_app:latest
+        image: yaleea1996/weather_app:refs/tags/v1.0
         ports:
         - containerPort: 8000
 
