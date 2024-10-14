@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: weather-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: weather-app
@@ -14,8 +14,7 @@ spec:
     spec:
       containers:  
       - name: weather-app  
-        image: hamster01/flask:latest
+        image: yaleea1996/weather_app:history
         ports:
         - containerPort: 8000
-      # imagePullSecrets:
-      # - name: regcred
+
