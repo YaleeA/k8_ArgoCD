@@ -1,0 +1,38 @@
+name: Update Kubernetes Manifests
+
+on:
+  push:
+    tags:
+      - 'v*'  # This triggers the workflow when a new version tag is pushed (e.g., v1.0.0).
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-24.04
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Update the Kubernetes manifest with the new image version
+      - name: Update Docker image version in manifest
+        run: |
+          # Define variables
+          IMAGE_NAME=yaleea1996/weather_app
+          NEW_TAG=${GITHUB_REF##*/} # Extracts the version from the tag (e.g., v1.0.0)
+
+          # Update the image tag in the deployment file (e.g., deployment.yaml)
+          sed -i "s|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${NEW_TAG}|" ./deploy/deployment.yaml
+
+      # Step 3: Commit the changes
+      - name: Commit changes
+        run: |
+          # git config --global user.email "your-email@example.com"
+          # git config --global user.name "your-github-username"
+          git add ./deploy/deployment.yaml
+          git commit -m "Update image version to ${NEW_TAG}"
+
+      # Step 4: Push the changes
+      - name: Push changes
+        run: |
+          git push origin main
